@@ -1,0 +1,6 @@
+{
+  "name": "NetTarifa - Tarifario de Internet",
+  "description": "Sistema de cotizaciones, tarifas y comisiones para vendedores y asesores de ventas de internet.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
