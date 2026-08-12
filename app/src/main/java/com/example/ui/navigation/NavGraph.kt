@@ -23,15 +23,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.material.icons.filled.ReceiptLong
 import com.example.ui.screens.CalculatorScreen
 import com.example.ui.screens.CatalogScreen
 import com.example.ui.screens.CommissionsScreen
 import com.example.ui.screens.CompareScreen
 import com.example.ui.screens.FeasibilityScreen
+import com.example.ui.screens.MegacableGasExportScreen
+import com.example.ui.screens.MegacableScreen
 import com.example.ui.screens.QuotesHistoryScreen
 import com.example.ui.viewmodel.NetTarifaViewModel
 
 sealed class Screen(val route: String, val title: String, val icon: ImageVector) {
+    object Megacable : Screen("megacable", "Megacable", Icons.Default.ReceiptLong)
     object Catalog : Screen("catalog", "Catálogo", Icons.Default.Speed)
     object Calculator : Screen("calculator", "Cotizador", Icons.Default.Calculate)
     object Compare : Screen("compare", "Comparar", Icons.Default.Compare)
@@ -41,6 +45,7 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
 }
 
 val bottomNavItems = listOf(
+    Screen.Megacable,
     Screen.Catalog,
     Screen.Calculator,
     Screen.Compare,
@@ -80,9 +85,27 @@ fun MainNavHost(viewModel: NetTarifaViewModel) {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.Catalog.route,
+            startDestination = Screen.Megacable.route,
             modifier = Modifier.padding(innerPadding)
         ) {
+            composable(Screen.Megacable.route) {
+                MegacableScreen(
+                    onOpenGasExporter = {
+                        navController.navigate("gas_exporter") {
+                            launchSingleTop = true
+                        }
+                    }
+                )
+            }
+
+            composable("gas_exporter") {
+                MegacableGasExportScreen(
+                    onBack = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+
             composable(Screen.Catalog.route) {
                 CatalogScreen(
                     viewModel = viewModel,
